@@ -44,6 +44,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     return Scaffold(
       appBar:
     AppBar(
+      actions: [
+  GestureDetector(
+    onTap: (){
+      Navigator.of(context).pushNamed('/profile-two-page');
+    },
+    child: CircleAvatar(child: Icon(Icons.person,))),
+      ],
           bottom: TabBar(
             onTap: (index) {
               // Should not used it as it only called when tab options are clicked,
@@ -89,24 +96,24 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
          
          BottomNavigationBarItem(
            icon: new Icon(Icons.search,color: Colors.black),
-           title: new Text('Search'),
+           label: 'Search',
          ),
          BottomNavigationBarItem(
            icon: Icon(Icons.person,color: Colors.black),
-           title: Text('Profile')
+           label: 'Profile'
          ),
          BottomNavigationBarItem(
            icon: new Icon(Icons.home ,color: Colors.black,),
-           title: new Text('Home',),
+           label: 'Home',
          ),
 
          BottomNavigationBarItem(
            icon: Icon(Icons.notifications,color: Colors.black),
-           title: Text('Notifications')
+           label: 'Notifications'
          ),
          BottomNavigationBarItem(
            icon: Icon(Icons.message,color: Colors.black),
-           title: Text('Message')
+           label: 'Message'
          )
        ],
      ),

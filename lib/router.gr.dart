@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 
 import 'ui/home_screen.dart';
 import 'ui/login/loginPage.dart';
+import 'ui/login/profile_two_page.dart';
 import 'ui/login/signup.dart';
 import 'ui/login/wlecom.dart';
 
@@ -19,11 +20,13 @@ class Routes {
   static const String signUpPage = '/sign-up-page';
   static const String loginPage1 = '/login-page1';
   static const String homeScreen = '/home-screen';
+  static const String profileTwoPage = '/profile-two-page';
   static const all = <String>{
     welcomePage,
     signUpPage,
     loginPage1,
     homeScreen,
+    profileTwoPage,
   };
 }
 
@@ -35,6 +38,7 @@ class Router extends RouterBase {
     RouteDef(Routes.signUpPage, page: SignUpPage),
     RouteDef(Routes.loginPage1, page: LoginPage1),
     RouteDef(Routes.homeScreen, page: HomeScreen),
+    RouteDef(Routes.profileTwoPage, page: ProfileTwoPage),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -78,6 +82,12 @@ class Router extends RouterBase {
     HomeScreen: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const HomeScreen(),
+        settings: data,
+      );
+    },
+    ProfileTwoPage: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ProfileTwoPage(),
         settings: data,
       );
     },
