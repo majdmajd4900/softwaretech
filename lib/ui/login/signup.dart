@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:progress_indicators/progress_indicators.dart';
+import 'package:provider/provider.dart';
+import 'package:software_technology/models/users.dart';
+import 'package:software_technology/provider/provider.dart';
 import 'package:string_validator/string_validator.dart';
 
 import 'Widget/bezierContainer.dart';
@@ -90,7 +93,7 @@ saveMobileNo(String mobileNo){
   Widget _submitButton() {
     return GestureDetector(
       onTap: (){
-        //submitForm(context);
+        submitForm(context);
         Navigator.of(context).pushNamed('/home-screen');
       },
           child: Container(
@@ -203,14 +206,22 @@ saveMobileNo(String mobileNo){
   GlobalKey<FormState> formKey = GlobalKey();
 
   submitForm(BuildContext context) async{
-//     Dialogs.showLoadingDialog(context);
+    Dialogs.showLoadingDialog(context);
     
-//     if (formKey.currentState.validate()) {
-//       formKey.currentState.save();
-//       FirebaseUser user =await Auth.auth.registerUsingEmailAndPassword(email, password);
-//         //user.updateProfile(userUpdateInfo)
-//         UserUpdateInfo userUpdateInfo =UserUpdateInfo();
-//         //user.
+    if (formKey.currentState.validate()) {
+      formKey.currentState.save();
+
+      Users user = Users(email: this.email , password: this.password , username: this.name) ;
+
+      await Provider.of<AppProvider>(context , listen: false).createUser(user);
+
+      await Provider.of<AppProvider>(context , listen: false).userLogin(user.username, user.password);
+
+
+    //  FirebaseUser user =await Auth.auth.registerUsingEmailAndPassword(email, password);
+        //user.updateProfile(userUpdateInfo)
+      //  UserUpdateInfo userUpdateInfo =UserUpdateInfo();
+        //user.
         
       
 
@@ -223,11 +234,11 @@ saveMobileNo(String mobileNo){
 
 
 //       ));
-//       Navigator.of(context).popAndPushNamed('/login-page1');
+      Navigator.of(context).popAndPushNamed('/login-page1');
 
-//     } else {
-//       return;
-//     }
+    } else {
+      return;
+    }
   }
 
   Widget _emailPasswordWidget() {
@@ -238,12 +249,12 @@ saveMobileNo(String mobileNo){
           _entryField("Full Name", validator: validatString , onSaved: saveName,),
           _entryField("Email id",
               keyboardType: TextInputType.emailAddress, validator: validatEmail, onSaved: saveEmail),
-          _entryField(
-            "Mobil No",
-            keyboardType: TextInputType.number,
-            validator: validatNumber,
-            onSaved: saveMobileNo
-          ),
+          // _entryField(
+          //   "Mobil No",
+          //   keyboardType: TextInputType.number,
+          //   validator: validatNumber,
+          //   onSaved: saveMobileNo
+          // ),
           _entryField(
             "Password",
             isPassword: true,

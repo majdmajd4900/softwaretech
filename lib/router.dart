@@ -1,5 +1,9 @@
 import 'package:auto_route/auto_route_annotations.dart';
+import 'package:flutter/material.dart';
+import 'package:software_technology/ui/home_screen_new.dart';
 import 'package:software_technology/ui/login/profile_two_page.dart';
+import 'package:software_technology/ui/login/screens/post_screen.dart';
+import 'package:software_technology/ui/posting.dart';
 
 import 'ui/home_screen.dart';
 import 'ui/login/loginPage.dart';
@@ -14,6 +18,10 @@ import 'ui/login/wlecom.dart';
     MaterialRoute(page: LoginPage1, ),
     MaterialRoute(page: HomeScreen, ),
     MaterialRoute(page: ProfileTwoPage, ),
+    MaterialRoute(page: HomePage),
+    MaterialRoute(page: PostScreen),
+    MaterialRoute(page: Posting)
+    
     
   ],
 )

@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:software_technology/models/users.dart';
+import 'package:software_technology/provider/provider.dart';
 import 'package:software_technology/ui/login/Widget/common_divider.dart';
 import 'package:software_technology/ui/login/widget/common_scaffold.dart';
 import 'package:software_technology/ui/login/widget/profile_tile.dart';
 
-class ProfileOnePage extends StatelessWidget {
-  var deviceSize;
+class ProfileOnePage extends StatefulWidget {
+  @override
+  _ProfileOnePageState createState() => _ProfileOnePageState();
+}
 
-  //Column1
+class _ProfileOnePageState extends State<ProfileOnePage> {
+  var deviceSize;
+Users user ;
+@override
+void initState() { 
+  super.initState();
+  user = Provider.of<AppProvider>(context , listen:false).getCurrentUser();
+}
   Widget profileColumn() => Container(
         height: deviceSize.height * 0.24,
         child: FittedBox(
@@ -17,7 +29,7 @@ class ProfileOnePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 ProfileTile(
-                  title: "Pawan Kumar",
+                  title: user.username ,
                   subtitle: "Developer",
                 ),
                 Padding(
@@ -60,9 +72,6 @@ class ProfileOnePage extends StatelessWidget {
         ),
       );
 
-  //column2
-
-  //column3
   Widget descColumn() => Container(
         height: deviceSize.height * 0.13,
         child: Center(
@@ -78,7 +87,7 @@ class ProfileOnePage extends StatelessWidget {
           ),
         ),
       );
-  //column4
+
   Widget accountColumn() => FittedBox(
         fit: BoxFit.fill,
         child: Container(
@@ -125,7 +134,7 @@ class ProfileOnePage extends StatelessWidget {
                     ),
                     ProfileTile(
                       title: "Email",
-                      subtitle: "mtechviral@gmail.com",
+                      subtitle: user.email,
                     ),
                     SizedBox(
                       height: 10.0,
@@ -148,7 +157,7 @@ class ProfileOnePage extends StatelessWidget {
         children: <Widget>[
           profileColumn(),
           CommonDivider(),
-          followColumn(deviceSize),
+          followColumn(deviceSize , context),
           CommonDivider(),
           descColumn(),
           CommonDivider(),
@@ -173,13 +182,13 @@ class ProfileOnePage extends StatelessWidget {
   }
 }
 
-Widget followColumn(Size deviceSize) => Container(
+Widget followColumn(Size deviceSize ,context) => Container(
       height: deviceSize.height * 0.13,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           ProfileTile(
-            title: "1.5K",
+            title: Provider.of<AppProvider>(context,listen: false).postsCount.toString(),
             subtitle: "Posts",
           ),
           ProfileTile(

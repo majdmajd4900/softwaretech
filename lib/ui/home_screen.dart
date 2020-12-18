@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:software_technology/ui/widgets/home_page_%20listview.dart';
+import 'package:provider/provider.dart';
+import 'package:software_technology/provider/provider.dart';
+import 'package:software_technology/ui/widgets/topics_widget.dart';
+
+import 'login/Widget/tabBar_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key key}) : super(key: key);
@@ -13,24 +17,21 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   TabController _controller;
   int _selectedIndex = 0;
 
-  List<Widget> list = [
-    Text('#topic'),
-    Text('#topic'),
-    Text('#topic'),
-    Text('#topic'),
-    Text('#topic'),
-
-  ];
+  List<Widget> list = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+      TopicsWidget topicsWidget = TopicsWidget(listOfTopics: Provider.of<AppProvider>(context,listen: false).allTopicsList);
+    list = topicsWidget.convertListOfTopicsToListOfTextWidgets();
+    
     // Create TabController for getting the index of current tab
     _controller = TabController(length: list.length, vsync: this);
 
     _controller.addListener(() {
       setState(() {
+        Provider.of<AppProvider>(context ).allTopicsList=[];
         _selectedIndex = _controller.index;
       });
       print("Selected Index: " + _controller.index.toString());
@@ -39,8 +40,23 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
 
 
+
+List<Widget> tabBarChildrenWidgetList=[];
+setupTabBarWidgetChildrenList(){
+for(int i = 0 ; i<list.length;i++){
+
+tabBarChildrenWidgetList.add(TabBarViewChild(topic: Provider.of<AppProvider>(context).allTopicsList[i],));
+      
+
+
+    }
+
+}
   @override
   Widget build(BuildContext context) {
+    setupTabBarWidgetChildrenList();
+    
+ 
     return Scaffold(
       appBar:
     AppBar(
@@ -52,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     child: CircleAvatar(child: Icon(Icons.person,))),
       ],
           bottom: TabBar(
+            isScrollable: true,
             onTap: (index) {
               // Should not used it as it only called when tab options are clicked,
               // not when user swapped
@@ -63,31 +80,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         ),
         body: TabBarView(
           controller: _controller,
-          children: [
-            ListView.builder(itemBuilder: (context ,index){
-              return ListTile(title: Text('topic proble 1 main idea'),trailing: Text('15'),);
-            }),
-            Center(
-                child: Text(
-                  _selectedIndex.toString(),
-                  style: TextStyle(fontSize: 40),
-                )),
-                Center(
-                child: Text(
-                  _selectedIndex.toString(),
-                  style: TextStyle(fontSize: 40),
-                )),
-                Center(
-                child: Text(
-                  _selectedIndex.toString(),
-                  style: TextStyle(fontSize: 40),
-                )),
-                Center(
-                child: Text(
-                  _selectedIndex.toString(),
-                  style: TextStyle(fontSize: 40),
-                )),
-          ],
+          
+          children: tabBarChildrenWidgetList
         ),
 
         bottomNavigationBar:BottomNavigationBar(

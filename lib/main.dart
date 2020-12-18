@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart' hide Router;
-
+import 'package:provider/provider.dart';
+import 'package:software_technology/provider/provider.dart';
 import 'package:software_technology/router.gr.dart';
+
+
 import 'package:software_technology/ui/home_screen.dart';
 import 'package:software_technology/ui/login/wlecom.dart';
 
 void main() {
-  runApp(MyApp());
+
+runApp(
+MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AppProvider()),
+      ],
+      child: MyApp() ,));
+
+
+  
 }
 
 class MyApp extends StatelessWidget {

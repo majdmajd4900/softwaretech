@@ -1,10 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:software_technology/models/users.dart';
+import 'package:software_technology/provider/provider.dart';
 import 'package:software_technology/ui/login/profile_one_page.dart';
 import 'package:software_technology/ui/login/widget/common_scaffold.dart';
+import 'package:software_technology/ui/widgets/post_profile.dart';
 
-class ProfileTwoPage extends StatelessWidget {
+class ProfileTwoPage extends StatefulWidget {
+  @override
+  _ProfileTwoPageState createState() => _ProfileTwoPageState();
+}
+
+class _ProfileTwoPageState extends State<ProfileTwoPage> {
   Size deviceSize;
+Users user ; 
 
+@override
+void initState() { 
+  super.initState();
+  user = Provider.of<AppProvider>(context , listen:false).getCurrentUser();
+}
   Widget profileHeader() => Container(
         height: deviceSize.height / 4,
         width: double.infinity,
@@ -29,7 +44,7 @@ class ProfileTwoPage extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "Pawan Kumar",
+                    user.username,
                     style: TextStyle(color: Colors.white, fontSize: 20.0),
                   ),
                   Text(
@@ -42,6 +57,7 @@ class ProfileTwoPage extends StatelessWidget {
           ),
         ),
       );
+
   Widget imagesCard() => Container(
         height: deviceSize.height / 6,
         child: Padding(
@@ -91,7 +107,7 @@ class ProfileTwoPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "Pawan Kumar posted a photo",
+                    "${user.username} posted a photo",
                   ),
                   SizedBox(
                     height: 5.0,
@@ -135,13 +151,14 @@ class ProfileTwoPage extends StatelessWidget {
           ),
         ),
       );
+
   Widget bodyData() => SingleChildScrollView(
         child: Column(
           children: <Widget>[
             profileHeader(),
-            followColumn(deviceSize),
+            followColumn(deviceSize , context),
             imagesCard(),
-            postCard(),
+            PostsProfile(user),
           ],
         ),
       );

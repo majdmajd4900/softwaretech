@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:software_technology/client/api-connection.dart';
+import 'package:software_technology/repository/users_repository.dart';
 import 'package:software_technology/ui/login/signup.dart';
 
 
@@ -18,7 +20,9 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage> {
   Widget _submitButton() {
     return InkWell(
-      onTap: () {
+      onTap: () async{
+     await  ApiClient.apiClient.getAllTopics();
+       //UserRepository.userRepository.getUsersFromClient();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => LoginPage1()));
       },

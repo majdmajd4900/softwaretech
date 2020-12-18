@@ -4,6 +4,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:flutter_login_signup/src/signup.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:progress_indicators/progress_indicators.dart';
+import 'package:provider/provider.dart';
+import 'package:software_technology/provider/provider.dart';
 import 'package:software_technology/ui/login/Widget/bezierContainer.dart';
 import 'package:software_technology/ui/login/signup.dart';
 
@@ -21,7 +23,7 @@ class LoginPage1 extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage1> {
-  String email,password;
+  String userName,password;
   Widget _backButton() {
     return InkWell(
       onTap: () {
@@ -42,8 +44,8 @@ class _LoginPageState extends State<LoginPage1> {
       ),
     );
   }
-saveEmail(String email){
-  this.email = email;
+saveEmail(String userName){
+  this.userName = userName;
 }
 
 savePassword(String password){
@@ -69,9 +71,26 @@ savePassword(String password){
   submitForm(BuildContext context) async{
     
     
-  //   if (formKey.currentState.validate()) {
-  //      Dialogs.showLoadingDialog(context, );
-  //     formKey.currentState.save();
+     if (formKey.currentState.validate()) {
+       // Dialogs.showLoadingDialog(context, );
+       formKey.currentState.save();
+
+       var status =  await Provider.of<AppProvider>(context , listen: false).userLogin(this.userName, this.password);
+
+       if(status is  String){
+         Fluttertoast.showToast(msg: 'Login Error ' + status,toastLength: Toast.LENGTH_LONG,textColor: Colors.red,);
+         return status;
+       }else{
+         Fluttertoast.showToast(msg: 'Logged in Successfully',toastLength: Toast.LENGTH_LONG,textColor: Colors.green,);
+         await Provider.of<AppProvider>(context,listen: false).getAllTopicsList();
+         await Provider.of<AppProvider>(context,listen: false).getAllTags();
+         Navigator.of(context).popAndPushNamed('/home-page');
+       }
+
+
+
+
+     }
   //     FirebaseUser user =await Auth.auth.loginUsingEmailAndPasswordd(email, password);
   //     print(user);
   //   //Dialogs.showLoadingDialog(context);
@@ -130,8 +149,8 @@ savePassword(String password){
   Widget _submitButton() {
     return GestureDetector(
       onTap: (){
-        Navigator.of(context).pushNamed('/home-screen');
-        //submitForm(context);
+        //Navigator.of(context).pushNamed('/home-screen');
+        submitForm(context);
        
         
       },
@@ -303,8 +322,8 @@ savePassword(String password){
       key:formKey,
           child: Column(
         children: <Widget>[
-          _entryField("Email id",
-       //   validator: validatEmail,
+          _entryField("User name",
+          validator: validatString,
           onSaved: saveEmail,
           
           ),

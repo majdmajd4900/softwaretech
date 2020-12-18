@@ -9,11 +9,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import 'models/post_model.dart';
 import 'ui/home_screen.dart';
+import 'ui/home_screen_new.dart';
 import 'ui/login/loginPage.dart';
 import 'ui/login/profile_two_page.dart';
+import 'ui/login/screens/post_screen.dart';
 import 'ui/login/signup.dart';
 import 'ui/login/wlecom.dart';
+import 'ui/posting.dart';
 
 class Routes {
   static const String welcomePage = '/';
@@ -21,12 +25,18 @@ class Routes {
   static const String loginPage1 = '/login-page1';
   static const String homeScreen = '/home-screen';
   static const String profileTwoPage = '/profile-two-page';
+  static const String homePage = '/home-page';
+  static const String postScreen = '/post-screen';
+  static const String posting = '/Posting';
   static const all = <String>{
     welcomePage,
     signUpPage,
     loginPage1,
     homeScreen,
     profileTwoPage,
+    homePage,
+    postScreen,
+    posting,
   };
 }
 
@@ -39,6 +49,9 @@ class Router extends RouterBase {
     RouteDef(Routes.loginPage1, page: LoginPage1),
     RouteDef(Routes.homeScreen, page: HomeScreen),
     RouteDef(Routes.profileTwoPage, page: ProfileTwoPage),
+    RouteDef(Routes.homePage, page: HomePage),
+    RouteDef(Routes.postScreen, page: PostScreen),
+    RouteDef(Routes.posting, page: Posting),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -91,6 +104,27 @@ class Router extends RouterBase {
         settings: data,
       );
     },
+    HomePage: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => HomePage(),
+        settings: data,
+      );
+    },
+    PostScreen: (data) {
+      final args = data.getArgs<PostScreenArguments>(
+        orElse: () => PostScreenArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => PostScreen(question: args.question),
+        settings: data,
+      );
+    },
+    Posting: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => Posting(),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -117,4 +151,10 @@ class LoginPage1Arguments {
   final Key key;
   final String title;
   LoginPage1Arguments({this.key, this.title});
+}
+
+/// PostScreen arguments holder class
+class PostScreenArguments {
+  final Question question;
+  PostScreenArguments({this.question});
 }
